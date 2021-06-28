@@ -12,6 +12,7 @@ app.use(cookieParser())
 app.get('/', (req, res)=>{
     res.json({msg: 'hello'})
 })
+app.use('/api', require('./routes/authRouter'))
 
 // Connect to MongoDB
 const URI= process.env.MONGODB_URL
