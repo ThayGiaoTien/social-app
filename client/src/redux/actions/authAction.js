@@ -1,14 +1,15 @@
-import {GLOBALTYPES, TYPES} from './globalTypes'
+import {GLOBALTYPES} from './globalTypes'
 import {postDataAPI} from '../../utils/fetchData'
+import valid from '../../utils/valid'
 
-export const login=(data)=>async(dispatch)=>{
+export const login=(userData)=>async(dispatch)=>{
     try{
         dispatch({
             type: GLOBALTYPES.ALERT,
             payload:{loading: true}
         })
         
-        const res= await postDataAPI('login', data)
+        const res= await postDataAPI('login', userData)
         dispatch({
             type: GLOBALTYPES.AUTH,
             payload:{
@@ -70,7 +71,40 @@ export const refreshToken=()=>async(dispatch)=>{
         }
     }
 }  
-export const register=(data)=>async(dispatch)=>{
+export const register=(userData)=>async(dispatch)=>{
+    // Create a function to to check input data
+    const check= valid(userData)
+    if(check.errLength>0) 
+    return dispatch({
+        type: GLOBALTYPES.ALERT,
+        payload: check.errMsg
+    })
+    try{
+        dispatch({type: GLOBALTYPES.ALERT, payload:{loading: true}})
+        const res= await postDataAPI('register', userData)
+        console.log(res)
+        dispatch({
+            type: GLOBALTYPES.AUTH,
+            payload: {
+                token: res.data.access_token,
+                user: res.data.user
+            }
+        })
+        localStorage.setItem('firstLogin', true)
+        dispatch({
+            type: GLOBALTYPES.ALERT,
+            payload: {
+                success: res.data.msg
+            }})
+
+    } catch(err){
+        dispatch({
+            type: GLOBALTYPES.ALERT,
+            payload: err.response.data.msg
+        }
+
+        )
+    }
 
 }
 export const logout=()=>async(dispatch)=>{

@@ -14,13 +14,15 @@ const userSchema= new mongoose.Schema({
         type: String, 
         required: true,
         trim: true,
-        maxlength: 25, unique: true
+        maxlength: 25, 
+        unique: true
     },
     email:{
         type: String, 
         required: true,
         trim: true, 
-        unique: true
+        unique: true,
+    
     },
     password: {
         type: String,

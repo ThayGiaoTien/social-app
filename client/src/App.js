@@ -22,8 +22,10 @@ const App = () => {
       <input type='checkbox' id='theme' />
       <div className="App">
         <div className='main'>
-          <Route exact path='/' component={auth.token?Home:Login}/>
-          <Route exact path='/register' component={Register}/>
+          <Route exact path="/" component={auth.token ? Home : Login} />
+          <Route exact path="/registers" component={Register} />   
+           {/* i don't understand */}
+
           <Route exact path='/:page' component={PageRender} />
           <Route exact path='/:page/:id' component={PageRender}/>
         </div>
