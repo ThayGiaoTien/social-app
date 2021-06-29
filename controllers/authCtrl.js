@@ -28,7 +28,7 @@ const authCtrl = {
             const access_token= createAccessToken({id: newUser._id})
             const refresh_token= refreshAccessToken({id: newUser._id})
 
-            res.cookie('refreshtoken', refresh_token, {
+            res.cookie('refresh_token', refresh_token, {
                 httpOnly: true,
                 path: 'api/refresh_token', 
                 maxAge: 30*24*60*60*1000
@@ -65,7 +65,7 @@ const authCtrl = {
             const access_token= createAccessToken({id: user._id})
             const refresh_token= refreshAccessToken({id: user._id})
 
-            res.cookie('refreshtoken', refresh_token, {
+            res.cookie('refresh_token', refresh_token, {
                 httpOnly: true, 
                 path: '/api/refresh_token',
                 maxAge: 30*24*60*60*1000
@@ -98,7 +98,7 @@ const authCtrl = {
         //this function is called when register or login
         try{
             const rf_token = req.cookies.refresh_token
-            if(!rf_token) return res.status(400).json({msg: "Please login now!"})
+            if(!rf_token) return res.status(400).json({msg: " login now!"})
             jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, async(err, result)=>{
                 if(err) return res.status(400).json({msg: "Please login now!"})
                 const user= await Users.findById(result.id).select("-password").populate(

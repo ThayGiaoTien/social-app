@@ -1,12 +1,12 @@
 import { GLOBALTYPES } from "../actions/globalTypes";
 
 const initialState={};
-const notifyReducer=(state=initialState, action)=>{
-    switch(action.types){
-        case GLOBALTYPES.NOTIFY:
+const alertReducer=(state=initialState, action)=>{
+    switch(action.type){
+        case GLOBALTYPES.ALERT:
             return action.payload
         default:
             return state
     }   
 }
-export default notifyReducer
+export default alertReducer

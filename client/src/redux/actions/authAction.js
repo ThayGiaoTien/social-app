@@ -9,7 +9,6 @@ export const login=(data)=>async(dispatch)=>{
         })
         
         const res= await postDataAPI('login', data)
-        console.log(res);
         dispatch({
             type: GLOBALTYPES.AUTH,
             payload:{
@@ -17,7 +16,7 @@ export const login=(data)=>async(dispatch)=>{
                 user: res.data.user
             }
         })
-        localStorage.getItem('firstLogin', true)
+        localStorage.setItem('firstLogin', true)
         
         dispatch({
             type: GLOBALTYPES.ALERT,
@@ -33,4 +32,47 @@ export const login=(data)=>async(dispatch)=>{
             } 
         })
     }
+}
+
+export const refreshToken=()=>async(dispatch)=>{
+       
+    const firstLogin= localStorage.getItem('firstLogin')
+    if(firstLogin) {
+        dispatch({
+            type: GLOBALTYPES.ALERT,
+            payload:{
+                loading: true
+            }
+        })
+        // Sent POST request to server to refresh token
+        try{
+            const res= await postDataAPI('refresh_token')
+            console.log(res)
+            dispatch({
+                type: GLOBALTYPES.AUTH,
+                payload: {
+                    token: res.data.access_token,
+                    user: res.data.user
+                }
+            })
+            dispatch({
+                type:GLOBALTYPES.ALERT,
+                payload:{}
+                   
+            })
+        }catch(err){
+            dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload:{
+                    error: err.response.data.msg
+                }
+            })
+        }
+    }
+}  
+export const register=(data)=>async(dispatch)=>{
+
+}
+export const logout=()=>async(dispatch)=>{
+
 }
