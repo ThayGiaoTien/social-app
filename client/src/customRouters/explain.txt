@@ -1,0 +1,7 @@
+PageRender get page and id from useParams, create pageName(with [id]) and pass
+it to generatePage to create React Element. generatePage will create component
+by require pageName component from pages folder and create React.createElement(component())
+.default
+
+PrivateRoute take props from PageRender will check if user is Logged in then 
+set a route to display this props or redirect to homepage
