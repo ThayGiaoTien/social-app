@@ -4,6 +4,7 @@ import PageRender from './PageRender'
 import Home from './pages/home'
 import Login from './pages/login'
 import Register from './pages/register'
+import Header from './components/header/Header'
 
 import Alert from './components/alert/Alert'
 
@@ -20,8 +21,9 @@ const App = () => {
     <Router>
       <Alert/>
       <input type='checkbox' id='theme' />
-      <div className="App">
+      <div className="App"> 
         <div className='main'>
+          {auth.token && <Header/>}
           <Route exact path="/" component={auth.token ? Home : Login} />
           <Route exact path="/registers" component={Register} />   
            {/* i don't understand */}

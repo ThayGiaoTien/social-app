@@ -108,5 +108,22 @@ export const register=(userData)=>async(dispatch)=>{
 
 }
 export const logout=()=>async(dispatch)=>{
-
+    try{
+        localStorage.removeItem('firstLogin')
+        await postDataAPI('logout')
+        window.location.href='/'
+        dispatch({
+            type: GLOBALTYPES.ALERT,
+            payload:{
+                message: 'Logged out successfully'
+            }
+        })
+    }catch(err){
+        dispatch({
+            type: GLOBALTYPES.ALERT,
+            payload: {
+                error: err.response.data.msg
+            }
+        })
+    }
 }
