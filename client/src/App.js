@@ -1,16 +1,20 @@
 import React,{useEffect} from 'react'
 import { BrowserRouter as Router, Route} from 'react-router-dom'
+
 import Home from './pages/home'
 import Login from './pages/login'
 import Register from './pages/register'
-import Header from './components/header/Header'
+
+
 import PageRender from './customRouters/PageRender'
 import PrivateRouter from './customRouters/PrivateRender'
 
 import Alert from './components/alert/Alert'
+import Header from './components/header/Header'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { refreshToken } from './redux/actions/authAction'
+
 const App = () => {
   const dispatch= useDispatch()
   const {auth}= useSelector(state=>state)
@@ -18,6 +22,7 @@ const App = () => {
   useEffect(()=>{
     dispatch(refreshToken())
   },[dispatch])
+  
   return (
     <Router>
       <Alert/>
