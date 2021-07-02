@@ -48,7 +48,7 @@ export const refreshToken=()=>async(dispatch)=>{
         // Sent POST request to server to refresh token
         try{
             const res= await postDataAPI('refresh_token')
-            console.log(res)
+            
             dispatch({
                 type: GLOBALTYPES.AUTH,
                 payload: {

@@ -14,6 +14,7 @@ import Header from './components/header/Header'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { refreshToken } from './redux/actions/authAction'
+import { updateProfile } from './redux/actions/profileAction'
 
 const App = () => {
   const dispatch= useDispatch()
@@ -21,6 +22,7 @@ const App = () => {
   
   useEffect(()=>{
     dispatch(refreshToken())
+   
   },[dispatch])
   
   return (

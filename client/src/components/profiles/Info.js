@@ -13,7 +13,8 @@ const Info = ({auth, profile, dispatch, id}) => {
     // second this user profile just wrote in profile.users state, we need to 
     // filter it and then change state of userData
     const [userData, setUserData]= useState([])
-    console.log(profile)
+    const [onEdit, setOnEdit]= useState(false)
+    
     useEffect(()=>{
         if(id===auth.user._id) {
             setUserData([auth.user])
@@ -29,36 +30,43 @@ const Info = ({auth, profile, dispatch, id}) => {
                 userData.map(user=>(
                     <div className='info_container' key={user._id}>
                         <Avatar src={user.avatar} size='super-avatar'/>
+
                         <div className='info_content'>
                             <div className='info_content_title'>
                                 <h2>{user.username}</h2>
-                            </div>
+                            
                             {
                                 user._id===auth.user._id?
                                 <button className='btn btn-outline-info'
-                                onClick={()=>{}}>Edit Profile</button>
+                                onClick={()=>setOnEdit(true)}>Edit Profile</button>
                                 : <FollowBtn user={user}/>
                             }
-                        </div>
+                            </div>
+                        
 
-                        <div className='follow_btn'>
-                            <span className='mr-4' onClick={(_=>{})}>
-                                {user.followers.length} Followers
-                            </span>
-                            <span className='ml-4' onClick={()=>{}}>
-                                {user.following.length} Following
-                            </span>
-                        </div>
+                            <div className='follow_btn'>
+                                <span className='mr-4' onClick={(_=>{})}>
+                                    {user.followers.length} Followers
+                                </span>
+                                <span className='ml-4' onClick={()=>{}}>
+                                    {user.following.length} Following
+                                </span>
+                            </div>
 
-                        <h6>{user.fullname}<span className='text-danger'>{user.mobile}</span></h6>
-                        <p className='m-0'>{user.address}</p>
-                        <h6 className='m-0'>{user.email}</h6>
-                        <a href={user.website} target="_blank" rel='noreferer'>
-                            {user.website}
-                        </a>
-                        <p>{user.story}</p>
+                            <h6>{user.fullname}<span className='text-danger'>{user.mobile}</span></h6>
+                            <p className='m-0'>{user.address}</p>
+                            <h6 className='m-0'>{user.email}</h6>
+                            <a href={user.website} target="_blank" rel='noreferer'>
+                                {user.website}
+                            </a>
+                            <p>{user.story}</p>
+                        </div>
+                        {
+                            onEdit && <EditProfile setOnEdit={setOnEdit}/>
+                        }
+                    
+            
                     </div>
-
                 ))
             }
         </div>
