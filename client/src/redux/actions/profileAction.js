@@ -1,6 +1,6 @@
 // get, update, follow unfollow functions
 
-import {GLOBALTYPES} from './globalTypes'
+import {GLOBALTYPES, DeleteData} from './globalTypes'
 import {getDataAPI, patchDataAPI} from '../../utils/fetchData'
 import {imageUpload} from '../../utils/imageUpload'
 // import {createNotify, removeNotify} from '../actions/notifyAction'
@@ -85,4 +85,58 @@ export const updateProfile=({userData, avatar, auth})=>async(dispatch)=>{
             error: err.response.data.msg
         }})
     }
+}
+
+export const follow=({users, user, auth})=>async(dispatch)=>{
+    //users in here is users in profile of user(after getProfile is called)
+    
+    let newUser;
+
+    if(users.every(item=>item._id!==user._id)){ //it means that getProfile is still not called.
+        newUser={...user, followers: [...user.followers, auth.user]}
+    } else{
+        users.forEach(item=>{
+            if(item._id===user._id){
+                newUser= {...item, followers: [...item.followers, auth.user]}
+            }
+        })
+    }
+    dispatch({type: PROFILE_TYPES.FOLLOW, payload: newUser})
+    dispatch({type: GLOBALTYPES.AUTH,
+        payload: {
+            ...auth,
+            user: {...auth.user, following: [...auth.user.following, newUser]}
+        }})
+    try{
+        const res= await patchDataAPI(`user/${user._id}/follow`, null, auth.token)
+        console.log(res.data.newUser)
+    } catch(err){
+        dispatch({type: GLOBALTYPES.ALERT, payload: { error: err.response.data.msg}})
+    }
+
+}
+export const unfollow=({users, user, auth})=>async(dispatch)=>{
+    let newUser;
+    
+    if(users.every(item=>item._id!==user._id)){
+        newUser= {...user, followers: DeleteData(user.followers, auth.user._id)}
+    } else {
+        users.forEach(item=>{
+            if(item._id===user._id){
+                newUser= {...item, followers: DeleteData(item.followers, auth.user._id)}
+            }
+        })
+    }
+    dispatch({type: PROFILE_TYPES.UNFOLLOW, payload: newUser})
+    dispatch({type: GLOBALTYPES.AUTH, payload: {
+        ...auth, 
+        user: {...auth.user, following: DeleteData(auth.user.following, newUser._id)}
+    }})
+    try{
+        const res= await patchDataAPI(`user/${user._id}/unfollow`, null, auth.token)
+        console.log(res)
+    } catch(err){
+        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
+    }
+    
 }

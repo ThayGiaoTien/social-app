@@ -43,15 +43,33 @@ const userCtrl={
         }
     },
     follow: async(req, res)=>{
-        try{
+        // the $push operator appends a specified value to an array
+        try{   
+            const users = await Users.find({_id: req.params.id, followers: req.user._id})
+            if(users.length>0) return res.status(500).json({msg:"You followed this user."})
 
+            const newUser= await Users.findOneAndUpdate({_id: req.params.id},{
+                $push: {followers: req.user._id}
+            }, {new: true}).populate("followers following", "-password")
+            await Users.findOneAndUpdate({_id: req.user._id},{
+                $push: {following: req.params.id}
+            }, {new: true})
+            res.json({newUser})
+            
         } catch(err){
             return res.status(500).json({msg: err.message})
         }
     },
     unfollow: async(req, res)=>{
+        //The $pull operator removes from an existing array all instances of a value or values that match a specified condition.
         try{
-
+            const newUser= await Users.findOneAndUpdate({_id: req.params.id},{
+                $pull : {followers: req.user._id}
+            },{new: true}).populate('followers following', '-password')
+            await Users.findOneAndUpdate({_id: req.user._id},{
+                $pull: {following: req.params.id}},{
+                    new: true}
+            )
         } catch(err){
             return res.status(500).json({msg: err.message})
         }

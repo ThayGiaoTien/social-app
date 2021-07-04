@@ -3,9 +3,9 @@ import Avatar from '../Avatar'
 import { GLOBALTYPES } from '../../redux/actions/globalTypes'
 
 import EditProfile from './EditProfile'
-import FollowBtn from '../FollowBTn'
-// import Followers from './Followers'
-// import Following from './Following'
+import FollowBtn from '../FollowBtn'
+import Followers from './Followers'
+import Following from './Following'
 
 const Info = ({auth, profile, dispatch, id}) => {
     // There exist two possibilities, first the if of param===auth.id, so we 
@@ -14,6 +14,8 @@ const Info = ({auth, profile, dispatch, id}) => {
     // filter it and then change state of userData
     const [userData, setUserData]= useState([])
     const [onEdit, setOnEdit]= useState(false)
+    const [showFollowers, setShowFollowers]=useState(false)
+    const [showFollowing, setShowFollowing]= useState(false)
     
     useEffect(()=>{
         if(id===auth.user._id) {
@@ -23,7 +25,7 @@ const Info = ({auth, profile, dispatch, id}) => {
             setUserData(newData)
         }
     }, [auth, profile.users, dispatch, id])
-    console.log(userData)
+    
     return (
         <div>
             {
@@ -45,10 +47,10 @@ const Info = ({auth, profile, dispatch, id}) => {
                         
 
                             <div className='follow_btn'>
-                                <span className='mr-4' onClick={(_=>{})}>
+                                <span className='mr-4' onClick={()=>setShowFollowers(true)}>
                                     {user.followers.length} Followers
                                 </span>
-                                <span className='ml-4' onClick={()=>{}}>
+                                <span className='ml-4' onClick={()=>setShowFollowing(true)}>
                                     {user.following.length} Following
                                 </span>
                             </div>
@@ -63,6 +65,20 @@ const Info = ({auth, profile, dispatch, id}) => {
                         </div>
                         {
                             onEdit && <EditProfile setOnEdit={setOnEdit}/>
+                        }
+                        {
+                            showFollowers && 
+                            <Followers 
+                            users= {user.followers}
+                            setShowFollowers= {setShowFollowers}
+                            />
+                        }
+                        {
+                            showFollowing && 
+                            <Following
+                            users={user.following}
+                            setShowFollowing={setShowFollowing}
+                            />
                         }
                     
             
