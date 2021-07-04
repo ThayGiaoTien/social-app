@@ -11,6 +11,7 @@ import PrivateRouter from './customRouters/PrivateRender'
 
 import Alert from './components/alert/Alert'
 import Header from './components/header/Header'
+import StatusModal from './components/StatusModal'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { refreshToken } from './redux/actions/authAction'
@@ -18,7 +19,7 @@ import { updateProfile } from './redux/actions/profileAction'
 
 const App = () => {
   const dispatch= useDispatch()
-  const {auth}= useSelector(state=>state)
+  const {auth, status}= useSelector(state=>state)
   
   useEffect(()=>{
     dispatch(refreshToken())
@@ -31,11 +32,13 @@ const App = () => {
       <input type='checkbox' id='theme' />
       <div className="App"> 
         <div className='main'>
+          
           {auth.token && <Header/>}
+          {status && <StatusModal />}
           <Route exact path="/" component={auth.token ? Home : Login} />
           <Route exact path="/registers" component={Register} />   
            {/* i don't understand */}
-
+          
           <PrivateRouter exact path='/:page' component={PageRender}/>
           <PrivateRouter exact path='/:page/:id' component={PageRender}/>
         </div>

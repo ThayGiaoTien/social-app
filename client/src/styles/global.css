@@ -54,6 +54,10 @@
   /* -------- Profile ---------- */
   @import url("./profile.css");
 
+  /* -------- Status ---------- */
+  @import url("./status_modal.css");
+  
+
 
   
   
