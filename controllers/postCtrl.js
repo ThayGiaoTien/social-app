@@ -2,19 +2,20 @@ const Posts = require('../models/postModel')
 // const Comments= require('../models/commentModel')
 const Users= require('../models/userModel')
 
-class APIfeatures{
-    constructor(query, queryString){
-        this.query=query;
-        this.queryString=queryString;
-    }
-    paginating(){
-        const page=this.queryString.page*1 ||1
-        const limit= this.queryString.limit*1||9
-        const skip= (page-1)*limit
-        this.query= this.query.skip(skip).limit(limit)
-        return this;
-    }
-}
+// class APIfeatures {
+//     constructor(query, queryString){
+//         this.query = query;
+//         this.queryString = queryString;
+//     }
+
+//     paginating(){
+//         const page = this.queryString.page * 1 || 1
+//         const limit = this.queryString.limit * 1 || 9
+//         const skip = (page - 1) * limit
+//         this.query = this.query.skip(skip).limit(limit)
+//         return this;
+//     }
+// }
 
 
 const postCtrl={
@@ -43,20 +44,24 @@ const postCtrl={
     getPosts: async(req, res)=>{
         // Get all posts of this user and following users and then paginate them.
         try{
-            const features= new APIfeatures(Posts.find({
+            // const features= new APIfeatures(Posts.find({
+            //     user: [...req.user.following, req.user._id]
+            // }), req.query).paginating()
+
+            // const posts= await features.query.sort('-createdAt')
+            // .populate('user likes', 'avatar username fullname followers')
+            // .populate({
+            //     path: 'comments',
+            //     populate:{
+            //         path: 'user likes',
+            //         select: '-password'
+            //     }
+            // })
+            if(!req.user) return res.status(400).json({msg: 'err'})
+            const posts= await Posts.find({
                 user: [...req.user.following, req.user._id]
-            }), req.query).paginating()
-
-            const posts= await features.query.sort('-createdAt')
-            .populate('user likes', 'avatar usename fullname followers')
-            .populate({
-                path: 'comments',
-                populate:{
-                    path: 'user likes',
-                    select: '-password'
-                }
             })
-
+            console.log(posts)
             res.json({
                 msg: "Successfully!",
                 result: posts.length,  // We need result and page to display pagination.
@@ -105,7 +110,8 @@ const postCtrl={
         } catch(err){
             return res.status(500).json({msg: err.message})
         }
-    },getUserPosts: async(req, res)=>{
+    },
+    getUserPosts: async(req, res)=>{
         try{
 
         } catch(err){
@@ -130,7 +136,7 @@ const postCtrl={
             return res.status(500).json({msg: err.message})
         }
     },
-    getPosts: async(req, res)=>{
+    getPost: async(req, res)=>{
         try{
 
         } catch(err){

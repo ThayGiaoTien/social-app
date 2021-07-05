@@ -38,6 +38,27 @@ export const createPost=({content, images, auth})=>async(dispatch)=>{
         })
     }
 }
-export const updatePost=()=>{
+export const getPosts=(token)=>async(dispatch)=>{
+    // getPosts in backend will find all posts of this user and users which 
+    //this user is following. then return a {msg, length, posts}
+    try{
+        dispatch({type: POST_TYPES.LOADING_POST, payload: true})
+
+        const res= await getDataAPI('posts', token) //? maybe you don't need to login???
+        console.log(res)
+        dispatch({type: POST_TYPES.GET_POSTS, 
+            payload: {
+                ...res.data, page: 2
+            }
+        })
+
+        dispatch({type: POST_TYPES.LOADING_POST, payload: false})
+
+
+
+
+    } catch(err){
+        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
+    }
     
 }
