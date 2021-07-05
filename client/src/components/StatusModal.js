@@ -18,27 +18,80 @@ const StatusModal=()=>{
     const refCanvas= useRef()
     const [tracks, setTracks]= useState('')
 
-    const handleChangeImages=e=>{
 
+    // Features: Add files image/video to an array, delete element from array
+    // Handle stream, handleCapture, handleStopStream and handleSubmit
+
+    const handleChangeImages=e=>{
+        const files= [...e.target.files]
+        let err= ''
+        let newImages=[]
+        
+        files.forEach(file=>{
+            if(!file) return err= 'File does not exists.'
+            if(file.size>1024*1024*5){
+                return err="The image/video largest is 5 Mb."
+            }
+            return newImages.push(file)
+        })
+        if(err) dispatch({ type: GLOBALTYPES.ALERT, payload: {error: err}})
+        setImages([...images, ...newImages])
     }
     const deleteImages=(index)=>{
-
+        const newArr= [...images]
+        newArr.splice(index, 1) //removes an element from an array
+        setImages(newArr)
+        
     }
-    const handleStream=()=>{
+    const handleStream=()=>{    
+        setStream(true)
+        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+            navigator.mediaDevices.getUserMedia({video: true})
+            .then(mediaStream=>{
+                videoRef.current.srcObject= mediaStream
+                videoRef.current.play()
 
+                const track= mediaStream.getTracks()
+                setTracks(track[0])
+            }).catch(err=>console.log(err))
+        }
     }
     const handleCapture=()=>{
+        const width= videoRef.current.clientWidth;
+        const height= videoRef.current.clientHeight;
 
+        refCanvas.current.setAttribute('width', width)
+        refCanvas.current.setAttribute('height', height)
+
+        const ctx= refCanvas.current.getContext('2d')
+        ctx.drawImage(videoRef.current, 0,0, width, height)
+        let URL= refCanvas.current.toDataURL()
+        setImages([...images,{camera: URL}])
     }
     const handleStopStream=()=>{
-
+        tracks.stop()
+        setStream(false)
     }
     const handleSubmit=e=>{
+        e.preventDefault()
+        if(images.length===0)
+            return dispatch({
+                type: GLOBALTYPES.ALERT,
+                payload: {error: "Please add your image/video."}
+            })
+            // Sent PATCH OR POST REQUESTS to server.
+            dispatch(createPost({content, images, auth}))
 
+        
+            setContent('')
+            setImages([])
+            if(tracks) tracks.stop()
+            dispatch({type: GLOBALTYPES.STATUS, payload: false})
     }
     useEffect(()=>{
-        
+        // If status onEdit, holds the content and images as default. 
     },[])
+    
     return (
         <div className='status_modal'>
             <form onSubmit={handleSubmit}>
