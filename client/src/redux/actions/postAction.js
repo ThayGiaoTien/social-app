@@ -45,7 +45,7 @@ export const getPosts=(token)=>async(dispatch)=>{
         dispatch({type: POST_TYPES.LOADING_POST, payload: true})
 
         const res= await getDataAPI('posts', token) //? maybe you don't need to login???
-        console.log(res)
+       
         dispatch({type: POST_TYPES.GET_POSTS, 
             payload: {
                 ...res.data, page: 2
@@ -61,4 +61,36 @@ export const getPosts=(token)=>async(dispatch)=>{
         dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
     }
     
+}
+export const updatePost=({content, images, auth, status})=>async(dispatch)=>{
+    let media=[];
+    const imgNewUrl= images.filter(img=>!img.url)
+    const imgOldUrl= images.filter(img=>img.url)
+    if(status.content===content&& imgNewUrl.length===0 && imgOldUrl.length===status.images.length){
+        return ;
+    }
+    try{    
+        dispatch({type: GLOBALTYPES.ALERT, payload: {loading: true}})
+        if(images.length>0) media= await imageUpload(imgNewUrl)
+
+        const res= await patchDataAPI(`/post/${status._id}`, {content, images: [...imgOldUrl, ...media]}, auth.token)
+        console.log(res)
+        dispatch({
+            type: POST_TYPES.UPDATE_POST,
+            payload: {
+                ...res.data.newPost
+            }
+        })
+        dispatch({type: GLOBALTYPES.ALERT, payload: {success: res.data.msg}})
+        
+        //Notify 
+
+    } catch(err){
+        dispatch({
+            type: GLOBALTYPES.ALERT,
+            payload: {
+                error: err.response.data.msg
+            }
+        })
+    }
 }

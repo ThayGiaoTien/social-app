@@ -60,7 +60,7 @@ const postCtrl={
             if(!req.user) return res.status(400).json({msg: 'err'})
             const posts= await Posts.find({
                 user: [...req.user.following, req.user._id]
-            })
+            }).populate('user likes')
             console.log(posts)
             res.json({
                 msg: "Successfully!",
@@ -79,13 +79,7 @@ const postCtrl={
             const post= await Posts.findOneAndUpdate({_id: req.params.id}, {
                 content, images
             }).populate('user likes', 'avatar username fullname')
-            .populate({
-                path: 'comments',
-                populate: {
-                    path: 'user likes', 
-                    select: '-password'
-                }
-            })
+            
             res.json({
                 msg:'Everything up to date!',
                 newPost: {

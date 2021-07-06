@@ -80,7 +80,11 @@ const StatusModal=()=>{
                 payload: {error: "Please add your image/video."}
             })
             // Sent PATCH OR POST REQUESTS to server.
-            dispatch(createPost({content, images, auth}))
+            if(status.onEdit){
+                dispatch(updatePost({content, images, auth, status}))
+            } else {
+                dispatch(createPost({content, images, auth}))
+            }
 
         
             setContent('')
@@ -90,6 +94,9 @@ const StatusModal=()=>{
     }
     useEffect(()=>{
         // If status onEdit, holds the content and images as default. 
+        // We already sent ...post to status state, so we can get data from status.
+        setContent(status.content)
+        setImages(status.images)
     },[])
     
     return (

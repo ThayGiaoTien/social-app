@@ -29,7 +29,8 @@ const postReducer=(state=initialState, action)=>{
             };
         case POST_TYPES.UPDATE_POST:
             return {
-
+                ...state,
+                posts: [action.payload, ...state.posts]
             };
         case POST_TYPES.DELETE_POST:
             return {
