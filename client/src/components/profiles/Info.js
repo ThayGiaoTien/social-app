@@ -26,6 +26,15 @@ const Info = ({auth, profile, dispatch, id}) => {
         }
     }, [auth, profile.users, dispatch, id])
     
+    // Change state of MODAL
+    useEffect(()=>{
+        if(showFollowers||showFollowing||onEdit){
+            dispatch({type: GLOBALTYPES.MODAL, payload: true})
+        } else {
+            dispatch({type: GLOBALTYPES.MODAL, payload: false})
+
+        }
+    },[showFollowers,showFollowing, onEdit, dispatch])
     return (
         <div>
             {

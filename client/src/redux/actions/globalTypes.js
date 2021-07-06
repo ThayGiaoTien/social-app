@@ -17,3 +17,10 @@ export const DeleteData=(data, id)=>{
     return newData;
 
 }
+//  Check it each post of data array has id = post._id then return newData, which has been changed post.
+export const EditData=(data, id, post)=>{
+    const newData= data.map(item=>
+        item._id===id? post: item)
+    return newData;
+
+}

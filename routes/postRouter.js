@@ -11,4 +11,7 @@ router.route('/post/:id')
     .get(auth, postCtrl.getPost)
     .delete(auth, postCtrl.deletePost)
 
+router.patch('/post/:id/like', auth, postCtrl.likePost)
+router.patch('/post/:id/unlike', auth, postCtrl.unLikePost)
+
 module.exports = router

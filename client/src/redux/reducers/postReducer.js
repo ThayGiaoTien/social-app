@@ -1,5 +1,5 @@
 import {POST_TYPES} from '../actions/postAction'
-import {GLOBALTYPES} from '../actions/globalTypes'
+import {EditData, DeleteData} from '../actions/globalTypes'
 
 const initialState={
     loading: false,
@@ -30,7 +30,7 @@ const postReducer=(state=initialState, action)=>{
         case POST_TYPES.UPDATE_POST:
             return {
                 ...state,
-                posts: [action.payload, ...state.posts]
+                posts: EditData(state.posts, action.payload._id, action.payload)
             };
         case POST_TYPES.DELETE_POST:
             return {

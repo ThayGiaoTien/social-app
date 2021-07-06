@@ -109,7 +109,6 @@ export const follow=({users, user, auth})=>async(dispatch)=>{
         }})
     try{
         const res= await patchDataAPI(`user/${user._id}/follow`, null, auth.token)
-        console.log(res.data.newUser)
     } catch(err){
         dispatch({type: GLOBALTYPES.ALERT, payload: { error: err.response.data.msg}})
     }

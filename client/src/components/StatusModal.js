@@ -95,9 +95,12 @@ const StatusModal=()=>{
     useEffect(()=>{
         // If status onEdit, holds the content and images as default. 
         // We already sent ...post to status state, so we can get data from status.
-        setContent(status.content)
-        setImages(status.images)
-    },[])
+        if(status.onEdit){
+            setContent(status.content)
+            setImages(status.images)
+        }
+        
+    },[status])
     
     return (
         <div className='status_modal'>

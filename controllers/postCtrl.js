@@ -93,13 +93,26 @@ const postCtrl={
     },
     likePost: async(req, res)=>{
         try{
+            //Check if user already liked this post
+            const post= await Posts.find({_id: req.params.id, likes: req.user._id})
+            if(post.length>0) return res.status(400).json({msg: 'You liked this post already!'})
 
+            const like= await Posts.findOneAndUpdate({_id: req.params.id}, {
+                $push: {likes: req.user._id}
+            }, {new: true})
+            if(!like) return res.status(400).json({msg: "This post does not exists."})
+            res.json({msg: 'Liked this post!'})
         } catch(err){
             return res.status(500).json({msg: err.message})
         }
     },
     unLikePost: async(req, res)=>{
         try{
+            const unlike= await Posts.findOneAndUpdate({_id: req.params.id}, {
+                $pull: {likes: req.user._id}
+            }, {new: true})
+            if(!unlike) return res.status(400).json({msg: "This post does not exists."})
+            res.json({msg: "UnLiked post! "})
 
         } catch(err){
             return res.status(500).json({msg: err.message})
@@ -111,13 +124,15 @@ const postCtrl={
         } catch(err){
             return res.status(500).json({msg: err.message})
         }
-    },getPost: async(req, res)=>{
+    },
+    getPost: async(req, res)=>{
         try{
 
         } catch(err){
             return res.status(500).json({msg: err.message})
         }
-    },getPostsDiscover: async(req, res)=>{
+    },
+    getPostsDiscover: async(req, res)=>{
         try{
 
         } catch(err){

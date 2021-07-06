@@ -10,7 +10,7 @@ import {POST_TYPES} from '../../redux/actions/postAction'
 
 const Posts = () => {
     const {homePosts, auth, theme} = useSelector(state=>state)
-    console.log(homePosts)
+    
     const dispatch=useDispatch()
 
     const [load, setLoad]= useState(false)
