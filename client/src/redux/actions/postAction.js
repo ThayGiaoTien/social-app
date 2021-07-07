@@ -107,7 +107,7 @@ export const likePost = ({post, auth}) => async (dispatch) => {
     }
 }
 export const unLikePost=({post, auth})=>async(dispatch)=>{
-    const newPost= {...post, likes: post.likes.filter(like=>like._id!==auth.user._id)}
+    const newPost= {...post, likes: post.likes.filter(like=>like._id!==auth.user._id)}  
     dispatch({type: POST_TYPES.UPDATE_POST, payload: newPost})
 
     try{

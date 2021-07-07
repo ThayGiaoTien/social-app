@@ -60,7 +60,16 @@ const postCtrl={
             if(!req.user) return res.status(400).json({msg: 'err'})
             const posts= await Posts.find({
                 user: [...req.user.following, req.user._id]
-            }).populate('user likes')
+            }).populate('user likes','avatar username fullname followers')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'user likes',
+                    select:'-password'
+                }
+            })
+
+
             console.log(posts)
             res.json({
                 msg: "Successfully!",

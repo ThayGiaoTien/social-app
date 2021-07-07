@@ -59,6 +59,10 @@
 
   /* -------- Home ---------- */
   @import url("./home.css");
+
+    /* -------- Comment ---------- */
+    @import url("./comment.css");
+  
   
 
 
