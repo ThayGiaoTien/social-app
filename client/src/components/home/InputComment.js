@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { createComment } from '../../redux/actions/commentAction'
 import Icons from '../Icons'
 
-const InputComment = ({post, children}) => {
+const InputComment = ({post, children, onReply, setOnReply}) => {
     const[content, setContent] = useState('')
 
     const {auth, theme}= useSelector(state=>state)
@@ -12,20 +12,26 @@ const InputComment = ({post, children}) => {
     
     const handleSubmit=e=>{
         e.preventDefault()
-        if(!content.trimEnd()){
+        if(!content.trim()){
+            if(setOnReply) return setOnReply(false)
             return ;
         }
+        
         // A comment includes content, likes, user who created it, time created, reply and tag.
+        // If comment is a reply, we will push id of parent comment to reply array. 
         const newComment={
             content, 
             likes: [],
             user: auth.user,
             createdAt: new Date().toISOString(),
+            reply: onReply && onReply.commentId, // onReply now is a object {...comment, commentId}
+            tag: onReply && onReply.user
            
         }
 
         // And post data
         dispatch(createComment({post, newComment, auth}))
+        setContent('')
         
     }
     return (

@@ -17,6 +17,12 @@ const Comments = ({post}) => {
         setShowComments(newCm.slice(newCm.length-next))
     },[post.comments, next])
 
+    //Update replyComments
+    useEffect(()=>{
+        const newRep=post.comments.filter(cm=>cm.reply)
+        setReplyComments(newRep)
+    }, [post.comments])
+
     return (
         <div className='comments'>
 

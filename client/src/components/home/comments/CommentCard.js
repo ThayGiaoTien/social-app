@@ -10,12 +10,12 @@ import {Link} from 'react-router-dom'
 import moment from 'moment'
 import LikeButton from '../../LikeButton'
 import CommentMenu from './CommentMenu'
-// import {updateComment, likeComment, unLikeComment} from '../../../redux/actions/commentAction'
+import {updateComment, likeComment, unLikeComment} from '../../../redux/actions/commentAction'
 import InputComment from '../InputComment'
 
 import { useSelector, useDispatch } from 'react-redux'
 
-const CommentCard = ({children, comment, post, commentID}) => {
+const CommentCard = ({children, comment, post, commentId}) => {
 
     const {auth, theme} =useSelector(state=>state)
     const dispatch=useDispatch()
@@ -38,17 +38,37 @@ const CommentCard = ({children, comment, post, commentID}) => {
             setIsLike(true)
         }
     }, [comment, auth.user._id])
+    
     const handleUpdate=()=>{
-
+        if(comment.content!==content){
+            dispatch(updateComment({comment, post, content, auth}))
+        } else{
+            setOnEdit(false)
+        }
     }
-    const handleLike=()=>{
 
+    const handleLike=async()=>{
+        if(loadLike) return ;
+        setIsLike(true)
+        setLoadLike(true)
+        await dispatch(likeComment({comment, post, auth}))
+        setLoadLike(false)
     }
-    const handleUnLike=()=>{
+    const handleUnLike=async()=>{
+        if(loadLike) return;
+        setIsLike(false)
+        setLoadLike(true)
+        await dispatch(unLikeComment({comment, post, auth}))
+        setLoadLike(false)
 
-    }
-    const handleReply=()=>{
+    }       
 
+
+
+    // If user replies on a reply comment, commentId is not Changed, so new reply still is a reply of root comment, not of this reply comment.
+    const handleReply=()=>{                
+        if(onReply) setOnReply(false)        //cancel
+        setOnReply({...comment, commentId})     //reply
     }
     const styleCard={
         opacity: comment._id?1: 0.5, 
@@ -56,7 +76,7 @@ const CommentCard = ({children, comment, post, commentID}) => {
     }
     return (
         <div className='comment_card mt-2' style={styleCard}>
-            <Link to={`/prodile/${comment.user._id}` } className='d-flex text-dark'>
+            <Link to={`/profile/${comment.user._id}` } className='d-flex text-dark'>
                 <Avatar src={comment.user.avatar} size='small-avatar'/>
                 <h6 className='mx-1' >{comment.username}</h6>
             </Link>
@@ -72,6 +92,7 @@ const CommentCard = ({children, comment, post, commentID}) => {
                         onEdit
                         ? <textarea rows='5' value={content}
                         onChange={e=>setContent(e.target.value)} />
+
                         :   
                         <div>
                             {
@@ -125,22 +146,27 @@ const CommentCard = ({children, comment, post, commentID}) => {
                     </div>
                     
                 </div>
-            </div>
-            
-            <div className='d-flex align-items-center mx-2' style={{cursor: 'pointer'}}>
-                <CommentMenu post={post} comment={comment} setOnEdit={setOnEdit}/>
-                <LikeButton isLike={isLike} handleLike={handleLike} handleUnLike={handleUnLike} />
 
-            </div>
+
+                <div className='d-flex align-items-center mx-2' style={{cursor: 'pointer'}}>
+                    <CommentMenu post={post} comment={comment} setOnEdit={setOnEdit}/>
+                    <LikeButton isLike={isLike} handleLike={handleLike} handleUnLike={handleUnLike} />
+
+                </div>
+            </div>  
+            
+           
 
             {
                 onReply &&
                 <InputComment post={post} onReply={onReply} setOnReply={setOnReply}>
                     <Link to={`/profile/${onReply.user._id}`} className='mr-1'>
-                        @{onReply.user.username}
+                        @{onReply.user.username}: 
                     </Link>
                 </InputComment>
             }
+            
+            { children }
         </div>
     )
 }

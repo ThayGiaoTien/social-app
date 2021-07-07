@@ -28,6 +28,12 @@ export const createComment=({post, newComment, auth})=>async(dispatch)=>{
 export const updateComment=({comment, post, content, auth})=>async(dispatch)=>{
 
 }
+export const likeComment=({comment, post, auth})=>async(dispatch)=>{
+
+}
+export const unLikeComment=({comment, post, auth}) =>async(dispatch)=>{
+
+}
 export const deleteComment=({post, auth, comment})=>async(dispatch)=>{
     
 }
