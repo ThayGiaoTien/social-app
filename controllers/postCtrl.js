@@ -70,7 +70,6 @@ const postCtrl={
             })
 
 
-            console.log(posts)
             res.json({
                 msg: "Successfully!",
                 result: posts.length,  // We need result and page to display pagination.

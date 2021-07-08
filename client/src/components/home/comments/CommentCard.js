@@ -38,10 +38,12 @@ const CommentCard = ({children, comment, post, commentId}) => {
             setIsLike(true)
         }
     }, [comment, auth.user._id])
-    
+
+
     const handleUpdate=()=>{
         if(comment.content!==content){
             dispatch(updateComment({comment, post, content, auth}))
+            setOnEdit(false)
         } else{
             setOnEdit(false)
         }
