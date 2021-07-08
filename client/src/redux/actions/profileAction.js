@@ -20,18 +20,18 @@ export const getProfileUsers=({id, auth})=>async(dispatch)=>{
     try{
         dispatch({type: PROFILE_TYPES.LOADING, payload:true})
         const users= await getDataAPI(`/user/${id}`, auth.token)
-        // const posts= await getDataAPI(`/user_posts/${id}`,auth.token )
-        
+        const posts= await getDataAPI(`/user_posts/${id}`,auth.token )
+    
         dispatch({
             type: PROFILE_TYPES.GET_USER,
             payload: users.data
         })
-        // dispatch({
-        //     type: PROFILE_TYPES.GET_POSTS,
-        //     payload: {
-        //         ...posts.data, _id: id, page: 2 //what the hell is it??
-        //     }
-        // })
+        dispatch({
+            type: PROFILE_TYPES.GET_POSTS,
+            payload: {
+                ...posts.data, _id: id, page: 2 //what the hell is it??
+            }
+        })
         dispatch({type: PROFILE_TYPES.LOADING, payload: false})
     }catch(err){
         dispatch({

@@ -21,7 +21,7 @@ const userCtrl={
                 if(!user) return res.status(400).json({msg: "User does not exist."})
                 
                 res.json({user})
-                console.log(user)
+                
             } catch (err) {
                 return res.status(500).json({msg: err.message})
             }

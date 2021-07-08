@@ -52,12 +52,12 @@ const CardFooter = ({post}) => {
                 <Link to={`/post/${post._id}`} className="text-dark">
                         <i className="far fa-comment" />
                 </Link>
-                Share
+                <img src={Send} alt='send' onClick={()=>setIsShare(!isShare)} />
             </div>
 
             <div className='d-flex justify-content-between'>
                 <h6 style={{padding: '0 25px', cursor: 'pointer'}}>
-                    {post.likes.length} likes
+                    {post.likes.length} m. likes
                 </h6>
 
                 <h6 style={{padding: '0 25px', cursor: 'pointer'}}>

@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react'
 
 import Info from '../../components/profiles/Info'
 import Posts from '../../components/profiles/Posts'
+import Saved from '../../components/profiles/Saved'
 
 import { useSelector, useDispatch } from 'react-redux'
 import LoadIcon from '../../images/loading.gif'
@@ -27,7 +28,7 @@ const Profile= () => {
     return (
         <div className='profile'>
             <Info auth={auth} profile={profile} dispatch={dispatch} id={id}/>
-            <Posts />
+            <Posts auth = {auth} profile={profile} dispatch={dispatch} id={id}/>
         </div>
     )
 }
