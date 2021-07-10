@@ -29,7 +29,7 @@ export const getProfileUsers=({id, auth})=>async(dispatch)=>{
         dispatch({
             type: PROFILE_TYPES.GET_POSTS,
             payload: {
-                ...posts.data, _id: id, page: 2 //what the hell is it??
+                ...posts.data, _id: id, page: 2 //what the hell is it?? --> look at reducer
             }
         })
         dispatch({type: PROFILE_TYPES.LOADING, payload: false})

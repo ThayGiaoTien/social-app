@@ -1,10 +1,16 @@
 import React from 'react'
 
-const LoadMoreBtn = () => {
+const LoadMoreBtn = ({result, page, load, handleLoadMore}) => {
     return (
-        <div>
-            LoadMore
-        </div>
+        <>
+            {
+                result <9*(page-1) ? '': 
+                !load && <button className= 'btn btn-dark mx-auto d-block'
+                onClick= {handleLoadMore}>
+                    Load More
+                </button>
+            }
+        </>
     )
 }
 

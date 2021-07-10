@@ -11,7 +11,9 @@ const Posts = ({auth, id, dispatch, profile}) => {
     const [page, setPage]= useState(0)
     const [load, setLoad]= useState(false)
 
-    useEffect(()=>{ 
+    console.log(profile)
+    
+    useEffect(()=>{                         // don't understand->>>look at profile reducer
         profile.posts.forEach(data=>{
             if(data._id===id) {
                 setPosts(data.posts)

@@ -15,8 +15,14 @@ const Posts = () => {
 
     const [load, setLoad]= useState(false)
 
-    const handleLoadMore=()=>{
-
+    const handleLoadMore=async()=>{
+        setLoad(true)
+        const res= await getDataAPI(`posts?limit=${homePosts.page*9}`, auth.token)
+        dispatch({                                                  //Change state of posts and page
+            type: POST_TYPES.GET_POSTS,
+            payload: {...res.data, page: homePosts.page+1}
+        })
+        setLoad(false)
     }
     return (
         <div className='posts'>

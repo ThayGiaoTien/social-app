@@ -28,7 +28,7 @@ const profileReducer =(state=initialState, action)=>{
                 ...state,
                 ids: [...state.ids, action.payload]
         };
-        case PROFILE_TYPES.GET_POSTS: 
+        case PROFILE_TYPES.GET_POSTS:   // posts= {{posts: {...}, page, _id}, }
             return {
                 ...state,
                 posts: [...state.posts, action.payload]
