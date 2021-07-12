@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes'
 import { deletePost } from '../../../redux/actions/postAction'
-import { BASE_URL } from '../../../utils/config'   //use to copy link
+import { BASE_URL } from '../../../utils/config'   //use to copy link to clipboard
 
 
 const CardHeader = ({post}) => {
@@ -25,7 +25,7 @@ const CardHeader = ({post}) => {
         }
     }
     const handleCopyLink=()=>{
-        
+        navigator.clipboard.writeText(`${BASE_URL}/post/${post._id}`)
     }
     return (
         <div className='card_header'>

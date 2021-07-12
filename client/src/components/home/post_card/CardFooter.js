@@ -4,8 +4,8 @@ import Send from '../../../images/send.svg'
 import LikeButton from '../../LikeButton'
 import { useSelector, useDispatch } from 'react-redux'
 import { likePost, unLikePost, savePost, unSavePost } from '../../../redux/actions/postAction'
-// import ShareModal from '../../ShareModal'
-// import { BASE_URL } from '../../../utils/config'
+import ShareModal from '../../ShareModal'
+import { BASE_URL } from '../../../utils/config'
 
 const CardFooter = ({post}) => {
     const [isLike, setIsLike]= useState(false)
@@ -39,6 +39,17 @@ const CardFooter = ({post}) => {
         await dispatch(unLikePost({post, auth}))
         setLoadLike(false)
     }   
+
+    // Saved
+    useEffect(()=>{
+
+    },[])
+    const handleSavePost=()=>{
+
+    }
+    const handleUnSavePost=()=>{
+
+    }
     return (
         <div className='card_footer'>
             <div className='card_icon_menu'>
@@ -65,6 +76,10 @@ const CardFooter = ({post}) => {
                 </h6>
             </div>
             
+
+            {
+                isShare && <ShareModal url={`${BASE_URL}/post/${post._id}`} theme={theme} />
+            }
         </div>
     )
 }
