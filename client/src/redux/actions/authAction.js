@@ -35,42 +35,33 @@ export const login=(userData)=>async(dispatch)=>{
     }
 }
 
-export const refreshToken=()=>async(dispatch)=>{
-       
-    const firstLogin= localStorage.getItem('firstLogin')
-    if(firstLogin) {
-        dispatch({
-            type: GLOBALTYPES.ALERT,
-            payload:{
-                loading: true
-            }
-        })
-        // Sent POST request to server to refresh token
-        try{
-            const res= await postDataAPI('refresh_token')
-            
-            dispatch({
-                type: GLOBALTYPES.AUTH,
+export const refreshToken = () => async (dispatch) => {
+    const firstLogin = localStorage.getItem("firstLogin")
+    if(firstLogin){
+        dispatch({ type: GLOBALTYPES.ALERT, payload: {loading: true} })
+
+        try {
+            const res = await postDataAPI('refresh_token')
+            dispatch({ 
+                type: GLOBALTYPES.AUTH, 
                 payload: {
                     token: res.data.access_token,
                     user: res.data.user
-                }
+                } 
             })
-            dispatch({
-                type:GLOBALTYPES.ALERT,
-                payload:{}
-                   
-            })
-        }catch(err){
-            dispatch({
-                type: GLOBALTYPES.ALERT,
-                payload:{
+
+            dispatch({ type: GLOBALTYPES.ALERT, payload: {} })
+
+        } catch (err) {
+            dispatch({ 
+                type: GLOBALTYPES.ALERT, 
+                payload: {
                     error: err.response.data.msg
-                }
+                } 
             })
         }
     }
-}  
+}
 export const register=(userData)=>async(dispatch)=>{
     // Create a function to to check input data
     const check= valid(userData)

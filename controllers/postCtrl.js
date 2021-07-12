@@ -152,11 +152,27 @@ const postCtrl={
     },
     getPostsDiscover: async(req, res)=>{
         try{
+            // $nin=== not in
+            const newArr=[ ...req.user.following, req.user._id]
+            const num= req.query.num || 9
+
+            const posts= await Posts.aggregate([
+                {$match: {user: {$nin: newArr}}}, //filters documents to pass only the documents that match the specified conditions.
+                {$sample: {size: Number(num)}}  //randomly selects the specified number of documents from its input
+            ])
+
+            return res.json({
+                msg: 'Success!',
+                result: posts.length,
+                posts
+            })
+            
 
         } catch(err){
             return res.status(500).json({msg: err.message})
         }
-    },deletePost: async(req, res)=>{
+    },
+    deletePost: async(req, res)=>{
         try{
 
         } catch(err){
