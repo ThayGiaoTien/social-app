@@ -15,7 +15,6 @@ import StatusModal from './components/StatusModal'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { refreshToken } from './redux/actions/authAction'
-import { updateProfile } from './redux/actions/profileAction'
 import { getPosts } from './redux/actions/postAction'
 
 const App = () => {

@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react'
 import Status from '../components/home/Status'
 import Posts from '../components/home/Posts'
-// import RightSideBar from '../components/home/RightSideBar'
+import RightSideBar from '../components/home/RightSideBar'
 
 import { useSelector } from 'react-redux'
 import LoadIcon from '../images/loading.gif'
@@ -37,7 +37,7 @@ const Home = () => {
             </div>
 
             <div className='col-md-4'>
-                <p>Right Side Bar is here.</p>
+                <RightSideBar/>
             </div>
         </div>
     )
