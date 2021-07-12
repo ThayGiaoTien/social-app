@@ -84,6 +84,9 @@ const userCtrl={
                 { $match: { _id: {$nin : newArr}}},
                 { $sample: { size: Number(num)}},
                 
+                
+                { $lookup: { from: 'users', localField: 'followers', foreignField: '_id', as: 'followers'}},
+                { $lookup: { from: 'users', localField: 'following', foreignField: '_id', as: 'following'}},
 
                 // {
                 //     $lookup:

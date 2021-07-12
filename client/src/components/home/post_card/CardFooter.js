@@ -17,7 +17,7 @@ const CardFooter = ({post}) => {
     const dispatch= useDispatch()
     
     const [saved, setSaved]= useState(false)
-    const [savedLoad, setSaveLoad]= useState(false)
+    const [saveLoad, setSaveLoad]= useState(false)
 
     // Likes
     useEffect(()=>{
@@ -42,14 +42,24 @@ const CardFooter = ({post}) => {
 
     // Saved
     useEffect(()=>{
-
-    },[])
-    const handleSavePost=()=>{
-
+        if(auth.user.saved.find(id=>id===post._id)){
+            setSaved(true)
+        } else {
+            setSaved(false)
+        }
+    },[auth.user.saved, post._id])
+    const handleSavePost=async()=>{
+        if(saveLoad) return ;
+        setSaveLoad(true)
+        await dispatch(savePost({post, auth}))
+        setSaveLoad(false)
     }
-    const handleUnSavePost=()=>{
-
-    }
+    const handleUnSavePost=async()=>{
+        if(saveLoad) return ;
+        setSaveLoad(true)
+        await dispatch(unSavePost({post, auth}))
+        setSaveLoad(false)
+    }   
     return (
         <div className='card_footer'>
             <div className='card_icon_menu'>
@@ -59,13 +69,22 @@ const CardFooter = ({post}) => {
                     handleLike={handleLike}
                     handleUnLike={handleUnLike}
                     />
-                </div>
-                <Link to={`/post/${post._id}`} className="text-dark">
+                    <Link to={`/post/${post._id}`} className="text-dark">
                         <i className="far fa-comment" />
                 </Link>
                 <img src={Send} alt='send' onClick={()=>setIsShare(!isShare)} />
-            </div>
+                </div>
+                
+            
+            
+                {
+                    saved? <i className='fas fa-bookmark text-info'
+                    onClick={handleUnSavePost} />
 
+                    : < i className='far fa-bookmark'
+                    onClick={handleSavePost} />
+                }
+            </div>
             <div className='d-flex justify-content-between'>
                 <h6 style={{padding: '0 25px', cursor: 'pointer'}}>
                     {post.likes.length} m. likes
