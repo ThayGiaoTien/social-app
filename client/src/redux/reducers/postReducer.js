@@ -34,7 +34,8 @@ const postReducer=(state=initialState, action)=>{
             };
         case POST_TYPES.DELETE_POST:
             return {
-    
+                ...state,
+                posts: DeleteData(state.posts, action.payload._id )
             };       
         default: 
             return state;    

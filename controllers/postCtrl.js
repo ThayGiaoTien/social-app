@@ -1,6 +1,7 @@
 const Posts = require('../models/postModel')
 // const Comments= require('../models/commentModel')
 const Users= require('../models/userModel')
+const Comments= require('../models/commentModel')
 
 class APIfeatures {
     constructor(query, queryString){
@@ -174,7 +175,18 @@ const postCtrl={
     },
     deletePost: async(req, res)=>{
         try{
+            // Only user who created the post can delete
+            const post= await Posts.findOneAndDelete({_id: req.params.id, user: req.user._id})
+            // Delete all related comments
+            await Comments.deleteMany({_id: {$in: post.comments}})
 
+            res.json({
+                msg: 'Deleted post and related comments!',
+                newPost: {
+                    ...post, 
+                    user: req.user
+                }
+            })
         } catch(err){
             return res.status(500).json({msg: err.message})
         }

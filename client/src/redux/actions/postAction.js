@@ -133,3 +133,14 @@ export const getPost=({detailPost, id, auth})=>async(dispatch)=>{
         }
     }
 }
+export const deletePost= ({post, auth})=>async(dispatch)=>{
+    dispatch({type: POST_TYPES.DELETE_POST, payload: post})
+    try{    
+        const res= await deleteDataAPI(`post/${post._id}`, auth.token)
+        console.log(res)
+
+
+    }catch(err){
+        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
+    }
+}

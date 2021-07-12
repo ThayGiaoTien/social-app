@@ -4,8 +4,8 @@ import { Link, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes'
-// import { deletePost } from '../../../redux/actions/postAction'
-// import { BASE_URL } from '../../../utils/config'
+import { deletePost } from '../../../redux/actions/postAction'
+import { BASE_URL } from '../../../utils/config'   //use to copy link
 
 
 const CardHeader = ({post}) => {
@@ -19,10 +19,13 @@ const CardHeader = ({post}) => {
         // Aaa i got this. By sending ...post to status state, now status contains all data of post and we can use it for update
     }
     const handleDeletePost=()=>{
-
+        if(window.confirm("Are you sure want to delete this post?")){
+            dispatch(deletePost({post, auth}))
+            history.push('/')
+        }
     }
     const handleCopyLink=()=>{
-    
+        
     }
     return (
         <div className='card_header'>
