@@ -3,10 +3,10 @@ import { POST_TYPES } from "./postAction"
 import { postDataAPI, patchDataAPI, deleteDataAPI } from "../../utils/fetchData"
 // import {createNotify, removeNotify} from '../actions/notifyAction'
 
-export const createComment=({post, newComment, auth})=>async(dispatch)=>{
-    console.log(post._id)
+export const createComment=({post, newComment, auth, socket})=>async(dispatch)=>{
+    
     const newPost= {...post, comments: [...post.comments, newComment]}
-    console.log(newPost)
+    
     
     dispatch({type: POST_TYPES.UPDATE_POST, payload:newPost})
     try{
@@ -20,6 +20,8 @@ export const createComment=({post, newComment, auth})=>async(dispatch)=>{
             type: POST_TYPES.UPDATE_POST, 
             payload: newPost
         })
+        // Socket
+        socket.emit('createComment', newPost)
 
     } catch(err){
         dispatch(({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}}))
@@ -57,16 +59,17 @@ export const unLikeComment=({comment, post, auth}) =>async(dispatch)=>{
         dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
     }
 }
-export const deleteComment=({post, auth, comment})=>async(dispatch)=>{
+export const deleteComment=({post, auth, comment, socket})=>async(dispatch)=>{
     // Delete all related reply comments and comment itself. 
     const deleteArr= [...post.comments.filter(cm=>cm.reply===comment._id), comment] 
-    console.log(deleteArr)
+    
     // We wrote id of parent comment in reply comment.
     const newPost= {
         ...post, 
         comments: post.comments.filter(cm=>!deleteArr.find(da=> cm._id=== da._id))
     }
     dispatch({type: POST_TYPES.UPDATE_POST, payload: newPost})
+    socket.emit('deleteComment', newPost)
     try{
         //Delete each comment in delete array.
         deleteArr.forEach(item=>{

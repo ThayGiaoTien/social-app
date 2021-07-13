@@ -1,20 +1,15 @@
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
+import { useSelector} from 'react-redux'
 
 import UserCard from '../UserCard'
 import FollowBtn from '../FollowBtn'
 import LoadIcon from '../../images/loading.gif'
 
-import { getSuggestions } from '../../redux/actions/suggestionsAction'
+
 
 const RightSideBar = () => {
     const {auth, suggestions}= useSelector(state=>state)
-    const dispatch= useDispatch()
-    useEffect(()=>{
-        if(suggestions.users.length===0) {
-            dispatch(getSuggestions(auth.token))
-        }
-    }, [dispatch, auth.token])
+    
 
     return (
         <div className='mt-3'>

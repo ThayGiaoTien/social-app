@@ -44,7 +44,7 @@ const commentCtrl={
             const comment= await Comments.find({_id: req.params.id, likes: req.user._id})
             if(comment.length>0) return res.status(400).json({msg: "You like this comment already!"})
             
-            await Comments.findOneAndUpdate({_id: req.params._id}, {
+            await Comments.findOneAndUpdate({_id: req.params.id}, {
                 $push: {likes: req.user._id}
             }, {new: true})
             res.json({msg: 'Liked comment!'})

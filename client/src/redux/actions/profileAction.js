@@ -87,7 +87,7 @@ export const updateProfile=({userData, avatar, auth})=>async(dispatch)=>{
     }
 }
 
-export const follow=({users, user, auth})=>async(dispatch)=>{
+export const follow=({users, user, auth, socket})=>async(dispatch)=>{
     //users in here is users in profile of user(after getProfile is called)
     
     let newUser;
@@ -109,12 +109,13 @@ export const follow=({users, user, auth})=>async(dispatch)=>{
         }})
     try{
         const res= await patchDataAPI(`user/${user._id}/follow`, null, auth.token)
+        socket.emit('follow', res.data.newUser)
     } catch(err){
         dispatch({type: GLOBALTYPES.ALERT, payload: { error: err.response.data.msg}})
     }
 
 }
-export const unfollow=({users, user, auth})=>async(dispatch)=>{
+export const unfollow=({users, user, auth, socket})=>async(dispatch)=>{
     let newUser;
     
     if(users.every(item=>item._id!==user._id)){
@@ -133,7 +134,7 @@ export const unfollow=({users, user, auth})=>async(dispatch)=>{
     }})
     try{
         const res= await patchDataAPI(`user/${user._id}/unfollow`, null, auth.token)
-        console.log(res)
+        socket.emit('unfollow', res.data.newUser)
     } catch(err){
         dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
     }

@@ -6,7 +6,7 @@ import Icons from '../Icons'
 const InputComment = ({post, children, onReply, setOnReply}) => {
     const[content, setContent] = useState('')
 
-    const {auth, theme}= useSelector(state=>state)
+    const {auth, theme, socket}= useSelector(state=>state)
     const dispatch= useDispatch()
 
     
@@ -30,7 +30,7 @@ const InputComment = ({post, children, onReply, setOnReply}) => {
         }
 
         // And post data
-        dispatch(createComment({post, newComment, auth}))
+        dispatch(createComment({post, newComment, auth, socket}))
         setContent('')
         
     }
