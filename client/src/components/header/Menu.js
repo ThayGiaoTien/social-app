@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {logout} from '../../redux/actions/authAction'
 import { GLOBALTYPES } from '../../redux/actions/globalTypes'
 import Avatar from '../Avatar'
-// import Avatar from '../Avatar'
-// import NotifyModal from '../NotifyModal'
+import NotifyModal from '../notifyModal'
 
 //Menu includes NavLinks, Notification-dropdown, Avatar(Profile, Dark mode, Logout)-dropdown
 const Menu = () => {
@@ -37,9 +36,19 @@ const Menu = () => {
                 <li className= 'nav-item dropdown' style={{opacity:1}}>
                     <span className="nav-link position-relative" id='navbarDropdown'
                     role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded="false">
-                        Favorite
+                        <span className='material-icons'
+                        style={{color: notify.data.length>0 ?'crimson': ''}}>
+                            favorite
+                        </span>
+
+                        <span className='notify_length'>{notify.data.length}</span>
                     </span>
-                    {/* <span className='notify_length'>{notify.data.length}</span> */}
+
+                    <div className= 'dropdown-menu' aria-labelledby='navbarDropdown'
+                    style={{transform: 'translateX(75px)'}} >
+                        <NotifyModal />
+                    </div>
+                    
                 </li>
 
                 <li className='nav-item dropdown' style={{opacity:1}}>

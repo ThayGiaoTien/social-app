@@ -6,7 +6,7 @@ import Icons from './Icons.js'
 import {imageShow, videoShow} from '../utils/mediaShow'
 
 const StatusModal=()=>{
-    const {auth, theme, status} = useSelector(state=>state)
+    const {auth, theme, status, socket} = useSelector(state=>state)
     
     const dispatch= useDispatch()
 
@@ -83,7 +83,7 @@ const StatusModal=()=>{
             if(status.onEdit){
                 dispatch(updatePost({content, images, auth, status}))
             } else {
-                dispatch(createPost({content, images, auth}))
+                dispatch(createPost({content, images, auth, socket}))
             }
 
         
