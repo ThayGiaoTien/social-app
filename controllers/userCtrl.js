@@ -67,10 +67,14 @@ const userCtrl={
             const newUser= await Users.findOneAndUpdate({_id: req.params.id},{
                 $pull : {followers: req.user._id}
             },{new: true}).populate('followers following', '-password')
+
             await Users.findOneAndUpdate({_id: req.user._id},{
                 $pull: {following: req.params.id}},{
                     new: true}
             )
+
+            res.json({newUser}) // I forgot to response newUser to front end so
+            // const res= await patchDataAPI(`user/${user._id}/unfollow`, null, auth.token) === null
         } catch(err){
             return res.status(500).json({msg: err.message})
         }

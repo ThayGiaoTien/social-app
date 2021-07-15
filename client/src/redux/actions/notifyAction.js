@@ -24,7 +24,7 @@ export const createNotify=({msg, auth, socket})=>async(dispatch)=>{
         })
         
     }catch(err){
-        dispatch({type: GLOBALTYPES.ALERT, payload: err.response.data.message})
+        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
     }
 }
 export const removeNotify=({msg, auth, socket})=>async(dispatch)=>{

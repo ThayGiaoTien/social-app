@@ -24,14 +24,15 @@ export const createComment=({post, newComment, auth, socket})=>async(dispatch)=>
         socket.emit('createComment', newPost)
 
         // Notify
-        const msg={
+        const msg = {
             id: res.data.newComment._id,
-            text: newComment.reply? 'mentioned you in a comment' : 'has commented on your post.',
-            recipients: newComment.reply ? [newComment.tag._id]: [post.user._id],
+            text: newComment.reply ? 'mentioned you in a comment.' : 'has commented on your post.',
+            recipients: newComment.reply ? [newComment.tag._id] : [post.user._id],
             url: `/post/${post._id}`,
-            content: post.content,
+            content: post.content, 
             image: post.images[0].url
         }
+
         dispatch(createNotify({msg, auth, socket}))
 
     } catch(err){

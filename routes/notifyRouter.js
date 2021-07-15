@@ -5,7 +5,7 @@ const notifyCtrl= require('../controllers/notifyCtrl')
 
 router.post('/notify', auth, notifyCtrl.createNotify)
 
-router.delete('/notify:id', auth, notifyCtrl.removeNotify)
+router.delete('/notify/:id', auth, notifyCtrl.removeNotify)
 
 router.get('/notifies', auth, notifyCtrl.getNotifies)
 
