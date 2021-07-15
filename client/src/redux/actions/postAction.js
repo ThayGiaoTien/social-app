@@ -2,7 +2,8 @@ import { getDataAPI, postDataAPI, patchDataAPI, deleteDataAPI } from "../../util
 import { GLOBALTYPES } from "./globalTypes"
 import {imageUpload} from '../../utils/imageUpload'
 import { createNotify, removeNotify} from './notifyAction'
-import Posts from "../../components/home/Posts"
+
+
 export const POST_TYPES={
     CREATE_POST: 'CREATE_POST',
     LOADING_POST:'LOADING_POST',
@@ -114,7 +115,16 @@ export const likePost = ({post, auth, socket}) => async (dispatch) => {
         await patchDataAPI(`post/${post._id}/like`, null, auth.token)
         
         // Notify
-       
+        const msg = {
+            id: auth.user._id,
+            text: 'like your post.',
+            recipients: [post.user._id],
+            url: `/post/${post._id}`,
+            content: post.content, 
+            image: post.images[0].url
+        }
+
+        dispatch(createNotify({msg, auth, socket}))
         
     }catch(err){
         dispatch({type: GLOBALTYPES.ALERT, payload:{error: err.response.data.msg}})

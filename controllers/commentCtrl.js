@@ -7,10 +7,15 @@ const commentCtrl={
         try{
             // ...newComment= {content, tag, reply}
             const { postId, content, tag, reply, postUserId } = req.body
-            console.log(postId)
+            
             // Find this post, created new comment, update new comment by $push and save comment.
             const post = await Posts.findById(postId)
             if(!post) return res.status(400).json({msg: "This post does not exists."})
+            
+            if(reply) {
+                const cm= await Comments.findById(reply)
+                if(!cm) return res.status(400).json({msg: 'This comment does not exists.'})
+            }
             
             const newComment =new Comments({
                 user: req.user._id, content, tag, reply, postUserId, postId

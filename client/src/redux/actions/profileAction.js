@@ -109,7 +109,7 @@ export const follow=({users, user, auth, socket})=>async(dispatch)=>{
         }})
     try{
         const res= await patchDataAPI(`user/${user._id}/follow`, null, auth.token)
-        socket.emit('follow', res.data.newUser)
+        // socket.emit('follow', res.data.newUser)
 
         // Notify
         const msg={
@@ -144,7 +144,7 @@ export const unfollow=({users, user, auth, socket})=>async(dispatch)=>{
     }})
     try{
         const res= await patchDataAPI(`user/${user._id}/unfollow`, null, auth.token)
-        socket.emit('unfollow', res.data.newUser)
+        // socket.emit('unFollow', res.data.newUser)
 
         // Notify
         const msg={

@@ -49,7 +49,7 @@ const NotifyModal = () => {
                 <img src={NoNotice} alt='NoNotice' className='w-100' />
             }
 
-            <div style={{mexHeight: 'calc(100vh-200px)', overflow: 'auto'}} >
+            <div style={{maxHeight: 'calc(100vh - 200px)', overflow: 'auto'}}>
                 {
                     notify.data.map((msg, index)=>(
                         <div key={index} className='px-2 mb-3'>

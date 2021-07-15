@@ -63,7 +63,7 @@ const SocketClient = () => {
     useEffect(()=>{
         socket.on('followToClient', newUser=> {
             dispatch({type: GLOBALTYPES.AUTH, payload: newUser})
-        }, socket, dispatch)
+        }, [socket, dispatch])                                         // Forgot []
         return ()=>socket.off('followToClient')
     })
     useEffect(()=>{
